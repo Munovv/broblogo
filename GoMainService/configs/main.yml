@@ -1,0 +1,4 @@
+server:
+  port: 3303
+  read_timeout: 20
+  write_timeout: 20
