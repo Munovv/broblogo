@@ -1,0 +1,12 @@
+server:
+  port: 3303
+  read_timeout: 20
+  write_timeout: 20
+
+mongo:
+  uri: "mongodb://127.0.0.1:27017"
+  name: "auth_service"
+  collection: "users"
+
+middleware:
+  hash_salt:

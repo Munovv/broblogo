@@ -1,5 +1,0 @@
-module github.com/Munovv/broblogo/GoMainService
-
-go 1.16
-
-require github.com/spf13/viper v1.9.0 // indirect
