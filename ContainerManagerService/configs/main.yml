@@ -1,0 +1,12 @@
+server:
+  port: 3304
+  read_timeout: 20
+  write_timeout: 20
+
+mongo:
+  uri: "mongodb://127.0.0.1:27018"
+  name: "container_manager_service"
+  collection: "containers"
+
+middleware:
+  hash_salt: z48$V|ef$g4TVCF
