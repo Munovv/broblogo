@@ -1,4 +1,4 @@
-module github.com/Munovv/broblogo/GoMainService
+module github.com/Munovv/broblogo/AuthService
 
 go 1.16
 

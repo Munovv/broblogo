@@ -2,8 +2,8 @@ package user
 
 import (
 	"context"
-	"github.com/Munovv/broblogo/GoMainService/pkg/user/model"
-	"github.com/Munovv/broblogo/GoMainService/pkg/user/repository/mongo"
+	"github.com/Munovv/broblogo/AuthService/pkg/user/model"
+	"github.com/Munovv/broblogo/AuthService/pkg/user/repository/mongo"
 )
 
 const CtxUserKey = "user"

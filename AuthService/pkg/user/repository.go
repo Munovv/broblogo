@@ -2,7 +2,7 @@ package user
 
 import (
 	"context"
-	"github.com/Munovv/broblogo/GoMainService/pkg/user/model"
+	"github.com/Munovv/broblogo/AuthService/pkg/user/model"
 )
 
 type Repository interface {

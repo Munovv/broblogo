@@ -2,7 +2,7 @@ package mongo
 
 import (
 	"context"
-	"github.com/Munovv/broblogo/GoMainService/pkg/user/model"
+	"github.com/Munovv/broblogo/AuthService/pkg/user/model"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"

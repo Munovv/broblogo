@@ -2,12 +2,12 @@ package main
 
 import (
 	"context"
-	"github.com/Munovv/broblogo/GoMainService/config"
-	"github.com/Munovv/broblogo/GoMainService/pkg"
-	"github.com/Munovv/broblogo/GoMainService/pkg/user/http"
-	"github.com/Munovv/broblogo/GoMainService/pkg/user/repository/mongo"
-	"github.com/Munovv/broblogo/GoMainService/pkg/user/service"
-	"github.com/Munovv/broblogo/GoMainService/server"
+	"github.com/Munovv/broblogo/AuthService/config"
+	"github.com/Munovv/broblogo/AuthService/pkg"
+	"github.com/Munovv/broblogo/AuthService/pkg/user/http"
+	"github.com/Munovv/broblogo/AuthService/pkg/user/repository/mongo"
+	"github.com/Munovv/broblogo/AuthService/pkg/user/service"
+	"github.com/Munovv/broblogo/AuthService/server"
 	"github.com/spf13/viper"
 	"log"
 	"os"

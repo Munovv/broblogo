@@ -2,7 +2,7 @@ package pkg
 
 import (
 	"context"
-	mongoConfig "github.com/Munovv/broblogo/GoMainService/config/mongo"
+	mongoConfig "github.com/Munovv/broblogo/AuthService/config/mongo"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"log"

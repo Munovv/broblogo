@@ -1,9 +1,9 @@
 package http
 
 import (
-	"github.com/Munovv/broblogo/GoMainService/pkg/user"
-	"github.com/Munovv/broblogo/GoMainService/pkg/user/model"
-	"github.com/Munovv/broblogo/GoMainService/pkg/user/service"
+	"github.com/Munovv/broblogo/AuthService/pkg/user"
+	"github.com/Munovv/broblogo/AuthService/pkg/user/model"
+	"github.com/Munovv/broblogo/AuthService/pkg/user/service"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )

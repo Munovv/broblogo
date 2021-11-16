@@ -4,9 +4,9 @@ import (
 	"context"
 	"crypto/sha1"
 	"fmt"
-	"github.com/Munovv/broblogo/GoMainService/pkg/user"
-	"github.com/Munovv/broblogo/GoMainService/pkg/user/model"
-	"github.com/Munovv/broblogo/GoMainService/pkg/user/repository/mongo"
+	"github.com/Munovv/broblogo/AuthService/pkg/user"
+	"github.com/Munovv/broblogo/AuthService/pkg/user/model"
+	"github.com/Munovv/broblogo/AuthService/pkg/user/repository/mongo"
 	"go.mongodb.org/mongo-driver/x/mongo/driver/uuid"
 )
 

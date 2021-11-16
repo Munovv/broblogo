@@ -1,9 +1,9 @@
 package config
 
 import (
-	"github.com/Munovv/broblogo/GoMainService/config/middleware"
-	"github.com/Munovv/broblogo/GoMainService/config/mongo"
-	"github.com/Munovv/broblogo/GoMainService/config/server"
+	"github.com/Munovv/broblogo/AuthService/config/middleware"
+	"github.com/Munovv/broblogo/AuthService/config/mongo"
+	"github.com/Munovv/broblogo/AuthService/config/server"
 	"github.com/spf13/viper"
 )
 

@@ -1,7 +1,7 @@
 package pkg
 
 import (
-	"github.com/Munovv/broblogo/GoMainService/pkg/user/http"
+	"github.com/Munovv/broblogo/AuthService/pkg/user/http"
 	"github.com/gin-gonic/gin"
 )
 
