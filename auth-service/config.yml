@@ -1,0 +1,9 @@
+server:
+  port: 3303
+  read_timeout: 20
+  write_timeout: 20
+
+mongo:
+  uri: "mongodb://localhost:27017/?connect=direct"
+  name: "auth_service"
+  collection: "users"

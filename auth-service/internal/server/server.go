@@ -2,6 +2,7 @@ package server
 
 import (
 	"context"
+	"github.com/Munovv/broblogo/auth-service/internal/config/server"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"time"
@@ -11,9 +12,9 @@ type Server struct {
 	httpServer *http.Server
 }
 
-func (s *Server) Run(port string, handler *gin.Engine) error {
+func (s *Server) Run(cfg *server.ServerConf, handler *gin.Engine) error {
 	s.httpServer = &http.Server{
-		Addr:           ":" + port,
+		Addr:           ":" + cfg.Port,
 		Handler:        handler,
 		MaxHeaderBytes: 1 << 20,
 		ReadTimeout:    10 * time.Second,
