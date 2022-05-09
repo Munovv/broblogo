@@ -12,12 +12,6 @@ type Repository struct {
 	db *mongo.Collection
 }
 
-func NewRepository(db *mongo.Database, col string) *Repository {
-	return &Repository{
-		db: db.Collection(col),
-	}
-}
-
 func (r Repository) CreateUser(ctx context.Context, u *model.User) error {
 	uModel := toMongoUser(u)
 	res, err := r.db.InsertOne(ctx, uModel)
@@ -42,6 +36,12 @@ func (r Repository) GetUser(ctx context.Context, username, password string) (*mo
 	}
 
 	return toModelUser(u), nil
+}
+
+func NewRepository(db *mongo.Database, col string) *Repository {
+	return &Repository{
+		db: db.Collection(col),
+	}
 }
 
 func toMongoUser(u *model.User) *model.UserMongo {

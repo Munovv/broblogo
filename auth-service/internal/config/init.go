@@ -11,19 +11,8 @@ type Config struct {
 	Mongo  *mongo.MongoConfig
 }
 
-func NewConfig() (*Config, error) {
-	if err := initReader(); err != nil {
-		return nil, err
-	}
-
-	return &Config{
-		Server: initServer(viper.GetViper()),
-		Mongo:  initMongoDb(viper.GetViper()),
-	}, nil
-}
-
 func initReader() error {
-	viper.AddConfigPath("./")
+	viper.AddConfigPath("configs")
 	viper.SetConfigName("config")
 
 	return viper.ReadInConfig()
@@ -43,4 +32,15 @@ func initMongoDb(v *viper.Viper) *mongo.MongoConfig {
 		Name:       mongo.GetMongoDbName(v),
 		Collection: mongo.GetCollectionName(v),
 	}
+}
+
+func NewConfig() (*Config, error) {
+	if err := initReader(); err != nil {
+		return nil, err
+	}
+
+	return &Config{
+		Server: initServer(viper.GetViper()),
+		Mongo:  initMongoDb(viper.GetViper()),
+	}, nil
 }

@@ -26,23 +26,17 @@ type Service struct {
 	repo *repository.Repository
 }
 
-func NewService(repo *repository.Repository) *Service {
-	return &Service{
-		repo: repo,
-	}
-}
-
 func (s *Service) CreateUser(ctx context.Context, username, password string) error {
 	u := &model.User{
 		Username: username,
-		Password: generateHash(password),
+		Password: s.generateHash(password),
 	}
 
 	return s.repo.CreateUser(ctx, u)
 }
 
 func (s *Service) GetUser(ctx context.Context, username, password string) (*model.User, error) {
-	u, err := s.repo.GetUser(ctx, username, generateHash(password))
+	u, err := s.repo.GetUser(ctx, username, s.generateHash(password))
 	if err != nil {
 		return nil, errors.UserNotFound
 	}
@@ -51,7 +45,7 @@ func (s *Service) GetUser(ctx context.Context, username, password string) (*mode
 }
 
 func (s *Service) GenerateToken(ctx context.Context, username, password string) (string, error) {
-	user, err := s.repo.GetUser(ctx, username, generateHash(password))
+	user, err := s.repo.GetUser(ctx, username, s.generateHash(password))
 	if err != nil {
 		return "", err
 	}
@@ -87,10 +81,16 @@ func (s *Service) ParseToken(accessToken string) (string, error) {
 	return claims.UserId, nil
 }
 
-func generateHash(password string) string {
+func (s *Service) generateHash(password string) string {
 	pwd := sha256.New()
 	pwd.Write([]byte(password))
 	pwd.Write([]byte(salt))
 
 	return fmt.Sprintf("%x", pwd.Sum(nil))
+}
+
+func NewService(repo *repository.Repository) *Service {
+	return &Service{
+		repo: repo,
+	}
 }

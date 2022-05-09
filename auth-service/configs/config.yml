@@ -4,6 +4,6 @@ server:
   write_timeout: 20
 
 mongo:
-  uri: "mongodb://localhost:27017/?connect=direct"
+  uri: "mongodb://localhost:27017"
   name: "auth_service"
   collection: "users"
