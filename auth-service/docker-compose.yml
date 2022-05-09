@@ -2,18 +2,18 @@ version: '3.4'
 
 services:
 
-  server:
+  auth-service:
     image: auth-service
     container_name: "auth-service"
     build: ./
-    command: ./cmd/main
+    command: /auth-service
     ports:
-      - 3000:3333
+      - 3303:3303
     depends_on:
       - mongodb
 
   mongodb:
-    image: mongo:latest
+    image: mongo:5.0.7
     container_name: "mongodb"
     environment:
       - MONGO_DATA_DIR=/data/db
@@ -23,4 +23,4 @@ services:
       - ./.data/db:/data/db
     ports:
       - "27017:27017"
-    command: mongod --smallfiles --logpath=/dev/null
+    command: mongod --logpath=/dev/null
