@@ -1,0 +1,10 @@
+mongodb:
+  url: mongodb://partner-storage:27017
+  database: partner-service
+  collection: partners_collection
+
+server:
+  port: 8080
+  read_timeout: 20s
+  write_timeout: 20s
+  max_write_mega_bytes: 2
