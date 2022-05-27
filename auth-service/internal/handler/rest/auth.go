@@ -42,3 +42,22 @@ func (h *Handler) signIn(ctx *gin.Context) {
 		Token: token,
 	})
 }
+
+func (h *Handler) verify(ctx *gin.Context) {
+	var input model.VerifyInput
+
+	if err := ctx.BindJSON(&input); err != nil {
+		newErrorResponse(ctx, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	userId, err := h.service.ParseToken(input.Token)
+	if err != nil {
+		newErrorResponse(ctx, http.StatusForbidden, err.Error())
+		return
+	}
+
+	ctx.JSON(http.StatusOK, model.VerifyOutput{
+		UserId: userId,
+	})
+}

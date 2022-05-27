@@ -17,3 +17,11 @@ type SignUpInput struct {
 type SignUpOutput struct {
 	Message string `json:"message"`
 }
+
+type VerifyInput struct {
+	Token string `json:"token"`
+}
+
+type VerifyOutput struct {
+	UserId string `json:"user_id"`
+}
