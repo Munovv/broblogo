@@ -2,12 +2,12 @@ package main
 
 import (
 	"context"
-	"github.com/Munovv/broblogo/blog-service/pkg/configs"
-	"github.com/Munovv/broblogo/blog-service/pkg/delivery/http"
-	"github.com/Munovv/broblogo/blog-service/pkg/repository"
-	"github.com/Munovv/broblogo/blog-service/pkg/server"
-	"github.com/Munovv/broblogo/blog-service/pkg/service"
-	"github.com/spf13/viper"
+	"github.com/Munovv/broblogo/blog-service/internal/agent"
+	"github.com/Munovv/broblogo/blog-service/internal/config"
+	"github.com/Munovv/broblogo/blog-service/internal/handler"
+	"github.com/Munovv/broblogo/blog-service/internal/repository"
+	"github.com/Munovv/broblogo/blog-service/internal/server"
+	"github.com/Munovv/broblogo/blog-service/internal/service"
 	"log"
 	"os"
 	"os/signal"
@@ -15,23 +15,39 @@ import (
 )
 
 func main() {
-	cfg, err := configs.Init(viper.GetViper())
+	// Инициализация конфигурации проекта
+	cfg, err := config.NewConfig()
 	if err != nil {
-		log.Fatalf("messages occurred while init app configs with message :%s", err.Error())
+		log.Fatalf("failed while init configs: %s", err.Error())
+		return
 	}
 
-	db := repository.NewMongoDb(cfg.Mongo)
-	repo := repository.NewMongoRepository(db, cfg.Mongo)
-	services := service.NewService(repo)
-	handler := http.NewHandler(services)
+	// Подключение к базе данных
+	db, err := repository.NewDatabase(cfg.Mongo)
+	if err != nil {
+		log.Fatalf("failed connect to db: %s", err.Error())
+		return
+	}
 
-	s := new(server.Server)
+	// Инициализация зависимостей
+	srv := server.NewServer(
+		cfg.Server,
+		handler.NewHandler(
+			service.NewService(
+				repository.NewRepository(db, cfg.Mongo.Collection),
+			),
+			agent.NewAuthAgent(),
+		).InitRoutes(),
+	)
+
+	// Запуск сервера
 	go func() {
-		if err := s.Run(cfg.Server, handler.InitRoutes()); err != nil {
-			log.Fatalf("messages occurred while running http server with message: %s", err.Error())
+		if err = srv.Run(); err != nil {
+			log.Fatalf("an error occurred while running http server: %s", err.Error())
+			return
 		}
 	}()
-	log.Println("Server has been running")
+	log.Println("Server has been started")
 
 	done := make(chan os.Signal, 1)
 	signal.Notify(done, syscall.SIGTERM, syscall.SIGINT)
@@ -39,8 +55,9 @@ func main() {
 
 	log.Println("Server has been stopped")
 
-	if err := s.Shutdown(context.Background()); err != nil {
-		log.Fatalf("messages occurred while stopping http server with message: %s", err.Error())
+	if err = srv.Shutdown(context.Background()); err != nil {
+		log.Fatalf("an error occurred on server shutdown: %s", err.Error())
+		return
 	}
 	log.Print("Server has been exited properly")
 }
