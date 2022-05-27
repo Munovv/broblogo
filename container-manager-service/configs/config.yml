@@ -1,0 +1,5 @@
+server:
+  port: 8080
+  read_timeout: 20s
+  write_timeout: 20s
+  max_write_mega_bytes: 2
