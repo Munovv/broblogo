@@ -1,0 +1,26 @@
+version: '3.4'
+
+services:
+
+  partner-service:
+    image: munovv/partner-service
+    container_name: "partner-service"
+    build: ./
+    command: /partner-service
+    ports:
+      - 8080:8080
+    depends_on:
+      - broblogo-storage
+
+  broblogo-storage:
+    image: mongo:5.0.7
+    container_name: "broblogo-storage"
+    environment:
+      - MONGO_DATA_DIR=/data/db
+      - MONGO_LOG_DIR=/dev/null
+      - MONGODB_DATABASE=auth_service
+    volumes:
+      - ./.data/db:/data/db
+    ports:
+      - "27017:27017"
+    command: mongod --logpath=/dev/null
