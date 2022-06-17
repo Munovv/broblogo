@@ -3,9 +3,9 @@ package main
 import (
 	"context"
 	"github.com/Munovv/broblogo/internal/container-manager-service/composer"
-	"github.com/Munovv/broblogo/internal/container-manager-service/config"
 	"github.com/Munovv/broblogo/internal/container-manager-service/handler"
-	"github.com/Munovv/broblogo/internal/container-manager-service/server"
+	"github.com/Munovv/broblogo/internal/pkg/config"
+	"github.com/Munovv/broblogo/internal/pkg/http"
 	"log"
 	"os"
 	"os/signal"
@@ -13,13 +13,13 @@ import (
 )
 
 func main() {
-	cfg, err := config.NewConfig("configs", "config")
+	cfg, err := config.NewConfig("deploy/container-manager-service", "config")
 	if err != nil {
 		log.Fatalf("failed init service configs: %s", err.Error())
 		return
 	}
 
-	srv := server.NewServer(
+	srv := http.NewServer(
 		cfg.Server,
 		handler.NewHandler(
 			composer.NewComposer(),

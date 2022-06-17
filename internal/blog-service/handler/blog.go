@@ -1,7 +1,8 @@
 package handler
 
 import (
-	"github.com/Munovv/broblogo/internal/blog-service/model"
+	response "github.com/Munovv/broblogo/internal/pkg/http"
+	rest "github.com/Munovv/broblogo/internal/pkg/models"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -9,19 +10,19 @@ import (
 func (h *handler) createPost(ctx *gin.Context) {
 	userId, err := h.getUserIdFromContext(ctx)
 	if err != nil {
-		newErrorResponse(ctx, http.StatusInternalServerError, "пустой идентификатор пользователя")
+		response.NewError(ctx, http.StatusInternalServerError, "пустой идентификатор пользователя")
 		return
 	}
 
-	var input model.CreatePostInput
+	var input rest.CreatePostInput
 
 	if err = ctx.BindJSON(&input); err != nil {
-		newErrorResponse(ctx, http.StatusBadRequest, "невалидная форма")
+		response.NewError(ctx, http.StatusBadRequest, "невалидная форма")
 		return
 	}
 
 	if err = h.service.CreateItem(ctx, input, userId); err != nil {
-		newErrorResponse(ctx, http.StatusInternalServerError, "ошибка создания поста")
+		response.NewError(ctx, http.StatusInternalServerError, "ошибка создания поста")
 	}
 
 	ctx.Done()

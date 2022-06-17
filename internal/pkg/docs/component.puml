@@ -1,0 +1,40 @@
+@startuml
+title Frontend Service - диаграмма компонентов клиентского сервиса
+
+node frontend as front {
+    component ServerDaemon {
+        component AppModules {
+            component Declarations {
+                [AuthComponent]
+                component ProfileComponent {
+                    [DashboardComponent]
+                    component TemplateServiceComponent {
+                        [CreateItem]
+                        [ReadItem]
+                        [ReadAllItems]
+                        [UpdateItem]
+                        [DeleteItem]
+                    }
+                }
+            }
+        }
+        component Navigate {
+            [HttpRouter]
+        }
+        component Message {
+            [SweetAlert]
+        }
+        component AppHttpClient as httpClient {
+            [AngularCore/HttpClient]
+            [AngularCore/HttpHeaders]
+        }
+    }
+}
+
+node Backend as dc #lightblue {
+
+}
+
+httpClient <----> dc
+
+@enduml

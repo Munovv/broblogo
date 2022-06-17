@@ -1,4 +1,4 @@
-package rest
+package http
 
 import "github.com/gin-gonic/gin"
 
@@ -10,6 +10,6 @@ type statusResponse struct {
 	Status string `json:"status"`
 }
 
-func newErrorResponse(c *gin.Context, statusCode int, message string) {
+func NewError(c *gin.Context, statusCode int, message string) {
 	c.AbortWithStatusJSON(statusCode, errorResponse{message})
 }

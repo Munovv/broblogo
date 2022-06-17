@@ -2,12 +2,11 @@ package main
 
 import (
 	"context"
-	"fmt"
-	"github.com/Munovv/broblogo/internal/partner-service/config"
 	"github.com/Munovv/broblogo/internal/partner-service/handler"
 	"github.com/Munovv/broblogo/internal/partner-service/repository"
-	"github.com/Munovv/broblogo/internal/partner-service/server"
 	"github.com/Munovv/broblogo/internal/partner-service/service"
+	"github.com/Munovv/broblogo/internal/pkg/config"
+	"github.com/Munovv/broblogo/internal/pkg/http"
 	"log"
 	"os"
 	"os/signal"
@@ -22,8 +21,6 @@ func main() {
 		return
 	}
 
-	fmt.Printf("%v", cfg)
-
 	// Инициализация базы данных
 	db, err := repository.NewMongoDatabase(cfg.Mongo)
 	if err != nil {
@@ -33,7 +30,7 @@ func main() {
 	}
 
 	// Инициализация зависимостей
-	srv := server.NewServer(
+	srv := http.NewServer(
 		cfg.Server,
 		handler.NewHandler(
 			service.NewService(

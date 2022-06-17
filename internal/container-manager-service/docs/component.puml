@@ -1,0 +1,26 @@
+@startuml
+title Container Manager Service - диаграмма компонентов
+
+node container-manager-service {
+    component RestServer {
+        component GinRouter {
+            component Handler {
+                [Composer] as composer
+            }
+        }
+    }
+}
+
+node docker-compose as dc #lightblue {
+
+}
+
+node client #lightgreen {
+
+}
+
+client -> composer : request
+composer -> dc
+
+composer --> client : response
+@enduml

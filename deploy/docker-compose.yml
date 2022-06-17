@@ -2,23 +2,63 @@ version: '3.4'
 
 services:
 
+  auth-service:
+    image: munovv/auth-service
+    container_name: "auth-service"
+    restart: unless-stopped
+    build:
+      context: ..
+      dockerfile: ./deploy/auth-service/Dockerfile
+    command: /auth-service
+    ports:
+      - "8001:8080"
+    depends_on:
+      - storage
+
+  blog-service:
+    image: munovv/blog-service
+    container_name: "blog-service"
+    restart: unless-stopped
+    build:
+      context: ..
+      dockerfile: ./deploy/blog-service/Dockerfile
+    command: /blog-service
+    ports:
+      - "8002:8080"
+    depends_on:
+      - storage
+
+  container-manager-service:
+    image: munovv/container-manager-service
+    container_name: "container-manager-service"
+    restart: unless-stopped
+    build:
+      context: ..
+      dockerfile: ./deploy/container-manager-service/Dockerfile
+    command: /container-manager-service
+    ports:
+      - "8003:8080"
+
   partner-service:
     image: munovv/partner-service
     container_name: "partner-service"
-    build: ./
+    restart: unless-stopped
+    build:
+      context: ..
+      dockerfile: ./deploy/partner-service/Dockerfile
     command: /partner-service
     ports:
-      - 8080:8080
+      - "8004:8080"
     depends_on:
-      - broblogo-storage
+      - storage
 
-  broblogo-storage:
+  storage:
     image: mongo:5.0.7
     container_name: "broblogo-storage"
     environment:
       - MONGO_DATA_DIR=/data/db
       - MONGO_LOG_DIR=/dev/null
-      - MONGODB_DATABASE=auth_service
+      - MONGODB_DATABASE=auth_servicec
     volumes:
       - ./.data/db:/data/db
     ports:

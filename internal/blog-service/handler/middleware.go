@@ -2,7 +2,8 @@ package handler
 
 import (
 	"errors"
-	"github.com/Munovv/broblogo/internal/blog-service/model"
+	response "github.com/Munovv/broblogo/internal/pkg/http"
+	rest "github.com/Munovv/broblogo/internal/pkg/models"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strings"
@@ -34,24 +35,24 @@ func (h *handler) corsMiddleware() gin.HandlerFunc {
 func (h *handler) authMiddleware(c *gin.Context) {
 	header := c.GetHeader(authorizationHeader)
 	if header == "" {
-		newErrorResponse(c, http.StatusUnauthorized, "empty auth header")
+		response.NewError(c, http.StatusUnauthorized, "empty auth header")
 		return
 	}
 
 	headerParts := strings.Split(header, " ")
 	if len(headerParts) != 2 || headerParts[0] != "Bearer" {
-		newErrorResponse(c, http.StatusUnauthorized, "invalid auth header")
+		response.NewError(c, http.StatusUnauthorized, "invalid auth header")
 		return
 	}
 
 	if len(headerParts[1]) == 0 {
-		newErrorResponse(c, http.StatusUnauthorized, "token is empty")
+		response.NewError(c, http.StatusUnauthorized, "token is empty")
 		return
 	}
 
 	userId, err := h.getUserId(headerParts[1])
 	if err != nil {
-		newErrorResponse(c, http.StatusUnauthorized, err.Error())
+		response.NewError(c, http.StatusUnauthorized, err.Error())
 		return
 	}
 
@@ -59,7 +60,7 @@ func (h *handler) authMiddleware(c *gin.Context) {
 }
 
 func (h *handler) getUserId(token string) (string, error) {
-	reqBody := model.AuthServiceRequest{Token: token}
+	reqBody := rest.AuthServiceRequest{Token: token}
 
 	resp, err := h.agent.VerifyUser(reqBody)
 	if err != nil {

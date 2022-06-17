@@ -2,15 +2,15 @@ package repository
 
 import (
 	"context"
-	mongoCfg "github.com/Munovv/broblogo/auth-service/auth-service/config/mongo"
+	"github.com/Munovv/broblogo/internal/pkg/config"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"log"
 	"time"
 )
 
-func InitDb(cfg *mongoCfg.MongoConfig) (*mongo.Database, error) {
-	client, err := mongo.NewClient(options.Client().ApplyURI(cfg.Uri))
+func InitDb(cfg *config.Mongo) (*mongo.Database, error) {
+	client, err := mongo.NewClient(options.Client().ApplyURI(cfg.Connection))
 	if err != nil {
 		log.Fatalf("an error occurred while init connection to mongoDB: %s", err.Error())
 
@@ -32,5 +32,5 @@ func InitDb(cfg *mongoCfg.MongoConfig) (*mongo.Database, error) {
 		return nil, err
 	}
 
-	return client.Database(cfg.Name), nil
+	return client.Database(cfg.Database), nil
 }

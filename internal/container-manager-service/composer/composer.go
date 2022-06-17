@@ -1,8 +1,7 @@
 package composer
 
 import (
-	"context"
-	"io/ioutil"
+	"os"
 	"os/exec"
 	"time"
 )
@@ -12,34 +11,57 @@ const (
 	dockerCompose = dockerCli + "-compose"
 
 	up   = "up"
-	down = "down"
+	down = "stop"
 )
 
 type composer struct {
 	cmd exec.Cmd
 }
 
-func (c *composer) Compose(ctx context.Context, service string) error {
-	ctx, cancel := context.WithTimeout(ctx, time.Second*10)
-	defer cancel()
+func (c *composer) Compose(services []string) error {
+	var err error
 
-	dockerComposeFile := c.getDockerComposeFile(service)
-	_, err := ioutil.ReadFile(dockerComposeFile)
-	if err != nil {
-		return err
-	}
+	c.cmd = *c.upCommand(services)
 
-	c.cmd = *c.buildCommand(ctx, dockerComposeFile)
+	go func() {
+		c.cmd.Stdout = os.Stdout
+		c.cmd.Stderr = os.Stderr
+		err = c.cmd.Run()
+	}()
 
-	return c.cmd.Run()
+	time.Sleep(4 * time.Second)
+
+	return err
 }
 
-func (c *composer) buildCommand(ctx context.Context, dockerComposeFile string) *exec.Cmd {
-	return exec.CommandContext(ctx, dockerCompose, "-f", dockerComposeFile, up)
+func (c *composer) Down(services []string) error {
+	var err error
+
+	c.cmd = *c.downCommand(services)
+
+	go func() {
+		c.cmd.Stdout = os.Stdout
+		c.cmd.Stderr = os.Stderr
+		err = c.cmd.Run()
+	}()
+
+	time.Sleep(4 * time.Second)
+
+	return err
 }
 
-func (c *composer) getDockerComposeFile(service string) string {
-	return "compose/" + service + "/docker-compose.yml"
+func (c *composer) upCommand(services []string) *exec.Cmd {
+	baseArgs := []string{"-f", "./deploy/docker-compose.yml", up}
+	args := append(baseArgs, append(services)...)
+
+	return exec.Command(dockerCompose, args...)
+}
+
+func (c *composer) downCommand(services []string) *exec.Cmd {
+	baseArgs := []string{"-f", "./deploy/docker-compose.yml", down}
+	args := append(baseArgs, append(services)...)
+
+	return exec.Command(dockerCompose, args...)
 }
 
 func NewComposer() *composer {

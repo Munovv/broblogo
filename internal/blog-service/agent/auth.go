@@ -3,7 +3,7 @@ package agent
 import (
 	"bytes"
 	"encoding/json"
-	"github.com/Munovv/broblogo/blog-service/blog-service/model"
+	rest "github.com/Munovv/broblogo/internal/pkg/models"
 	"net/http"
 )
 
@@ -12,8 +12,8 @@ type auth struct {
 	port string
 }
 
-func (a *auth) VerifyUser(in model.AuthServiceRequest) (model.AuthServiceResponse, error) {
-	var out model.AuthServiceResponse
+func (a *auth) VerifyUser(in rest.AuthServiceRequest) (rest.AuthServiceResponse, error) {
+	var out rest.AuthServiceResponse
 
 	reqBody, err := json.Marshal(&in)
 	if err != nil {

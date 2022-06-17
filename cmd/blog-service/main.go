@@ -3,11 +3,11 @@ package main
 import (
 	"context"
 	"github.com/Munovv/broblogo/internal/blog-service/agent"
-	"github.com/Munovv/broblogo/internal/blog-service/config"
 	"github.com/Munovv/broblogo/internal/blog-service/handler"
 	"github.com/Munovv/broblogo/internal/blog-service/repository"
-	"github.com/Munovv/broblogo/internal/blog-service/server"
 	"github.com/Munovv/broblogo/internal/blog-service/service"
+	"github.com/Munovv/broblogo/internal/pkg/config"
+	"github.com/Munovv/broblogo/internal/pkg/http"
 	"log"
 	"os"
 	"os/signal"
@@ -15,22 +15,19 @@ import (
 )
 
 func main() {
-	// Инициализация конфигурации проекта
-	cfg, err := config.NewConfig()
+	cfg, err := config.NewConfig("configs", "config")
 	if err != nil {
-		log.Fatalf("failed while init configs: %s", err.Error())
+		log.Fatalf("failed config init: %s", err.Error())
 		return
 	}
 
-	// Подключение к базе данных
-	db, err := repository.NewDatabase(cfg.Mongo)
+	db, err := repository.NewDatabase(&cfg.Mongo)
 	if err != nil {
 		log.Fatalf("failed connect to db: %s", err.Error())
 		return
 	}
 
-	// Инициализация зависимостей
-	srv := server.NewServer(
+	srv := http.NewServer(
 		cfg.Server,
 		handler.NewHandler(
 			service.NewService(
@@ -40,9 +37,8 @@ func main() {
 		).InitRoutes(),
 	)
 
-	// Запуск сервера
 	go func() {
-		if err = srv.Run(); err != nil {
+		if err = srv.Start(); err != nil {
 			log.Fatalf("an error occurred while running http server: %s", err.Error())
 			return
 		}

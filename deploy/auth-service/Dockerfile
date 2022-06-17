@@ -4,16 +4,15 @@ ENV GOPATH=/
 WORKDIR /src/
 COPY ./ /src/
 
-RUN go mod download; CGO_ENABLED=0 go build -o /auth-service ./cmd/main/main.go
+ADD ./vendor ./vendor
+ADD ./go.* ./
 
-# build go app
-RUN go mod download
-RUN go build -o auth-service ./cmd/main/main.go
+RUN CGO_ENABLED=0 go build -o /auth-service ./cmd/auth-service/main.go
 
 FROM alpine:latest
 
 # copy go app & configs
 COPY --from=build /auth-service /auth-service
-COPY ./configs/ /configs/
+COPY ./deploy/auth-service/config.yml /configs/config.yml
 
 CMD ["/auth-service"]

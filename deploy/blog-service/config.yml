@@ -1,7 +1,7 @@
 mongodb:
   url: mongodb://storage:27017
-  database: partner-service
-  collection: partners_collection
+  database: blog-service
+  collection: posts_collection
 
 server:
   port: 8080

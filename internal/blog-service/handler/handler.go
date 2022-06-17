@@ -3,19 +3,20 @@ package handler
 import (
 	"context"
 	"github.com/Munovv/broblogo/internal/blog-service/model"
+	rest "github.com/Munovv/broblogo/internal/pkg/models"
 	"github.com/gin-gonic/gin"
 )
 
 type Service interface {
-	CreateItem(ctx context.Context, input model.CreatePostInput, userId string) error
+	CreateItem(ctx context.Context, input rest.CreatePostInput, userId string) error
 	GetItem(ctx context.Context, id string) (*model.Post, error)
 	GetItems(ctx context.Context, userId string) ([]model.Post, error)
-	UpdateItem(ctx context.Context, id string, input model.UpdatePostInput) error
+	UpdateItem(ctx context.Context, id string, input rest.UpdatePostInput) error
 	DeleteItem(ctx context.Context, id string) error
 }
 
 type Agent interface {
-	VerifyUser(in model.AuthServiceRequest) (model.AuthServiceResponse, error)
+	VerifyUser(in rest.AuthServiceRequest) (rest.AuthServiceResponse, error)
 }
 
 type handler struct {

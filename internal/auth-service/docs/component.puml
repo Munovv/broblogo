@@ -1,0 +1,29 @@
+@startuml
+title Template Service - диаграмма компонентов шаблонного сервиса
+
+node template-service as ts {
+    component RestServer {
+        component Router {
+            component Handler {
+                component Service {
+                    [Repository] as repository
+                }
+            }
+        }
+    }
+}
+
+node docker-compose as dc #lightblue {
+
+}
+
+cloud Database as db #lightgreen {
+
+}
+
+repository --> db
+
+dc --> ts
+
+
+@enduml

@@ -2,7 +2,7 @@ package repository
 
 import (
 	"context"
-	cfg "github.com/Munovv/broblogo/blog-service/blog-service/config/mongo"
+	"github.com/Munovv/broblogo/internal/pkg/config"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"log"
@@ -17,8 +17,8 @@ func (db *database) GetAbstractDatabase() *mongo.Database {
 	return db.db
 }
 
-func NewDatabase(cfg *cfg.MongoConfig) (*database, error) {
-	client, err := mongo.NewClient(options.Client().ApplyURI(cfg.Uri))
+func NewDatabase(cfg *config.Mongo) (*database, error) {
+	client, err := mongo.NewClient(options.Client().ApplyURI(cfg.Connection))
 	if err != nil {
 		log.Fatalf("an error occurred while init connection to mongoDB: %s", err.Error())
 
@@ -41,6 +41,6 @@ func NewDatabase(cfg *cfg.MongoConfig) (*database, error) {
 	}
 
 	return &database{
-		db: client.Database(cfg.Name),
+		db: client.Database(cfg.Database),
 	}, nil
 }

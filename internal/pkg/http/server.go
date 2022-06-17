@@ -1,8 +1,8 @@
-package server
+package http
 
 import (
 	"context"
-	"github.com/Munovv/broblogo/internal/partner-service/config"
+	"github.com/Munovv/broblogo/internal/pkg/config"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"time"

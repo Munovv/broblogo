@@ -2,7 +2,8 @@ package service
 
 import (
 	"context"
-	"github.com/Munovv/broblogo/blog-service/blog-service/model"
+	"github.com/Munovv/broblogo/internal/blog-service/model"
+	rest "github.com/Munovv/broblogo/internal/pkg/models"
 	"go.mongodb.org/mongo-driver/bson"
 	"time"
 )
@@ -19,7 +20,7 @@ type service struct {
 	repo Repository
 }
 
-func (s *service) CreateItem(ctx context.Context, input model.CreatePostInput, userId string) error {
+func (s *service) CreateItem(ctx context.Context, input rest.CreatePostInput, userId string) error {
 	post := &model.Post{
 		UserId:      userId,
 		Title:       input.Title,
@@ -41,7 +42,7 @@ func (s *service) GetItems(ctx context.Context, userId string) ([]model.Post, er
 	})
 }
 
-func (s *service) UpdateItem(ctx context.Context, id string, input model.UpdatePostInput) error {
+func (s *service) UpdateItem(ctx context.Context, id string, input rest.UpdatePostInput) error {
 	post := &model.Post{
 		ID:          id,
 		Title:       input.Title,

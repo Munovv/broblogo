@@ -2,7 +2,7 @@ package repository
 
 import (
 	"context"
-	"github.com/Munovv/broblogo/internal/partner-service/config"
+	"github.com/Munovv/broblogo/internal/pkg/config"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"time"

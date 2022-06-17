@@ -4,9 +4,9 @@ import (
 	"context"
 	"crypto/sha256"
 	"fmt"
-	"github.com/Munovv/broblogo/auth-service/auth-service/errors"
-	"github.com/Munovv/broblogo/auth-service/auth-service/model"
-	"github.com/Munovv/broblogo/auth-service/auth-service/repository"
+	"github.com/Munovv/broblogo/internal/auth-service/errors"
+	"github.com/Munovv/broblogo/internal/auth-service/model"
+	"github.com/Munovv/broblogo/internal/auth-service/repository"
 	"github.com/dgrijalva/jwt-go"
 	"time"
 )

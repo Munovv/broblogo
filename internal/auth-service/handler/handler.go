@@ -1,7 +1,7 @@
-package rest
+package handler
 
 import (
-	"github.com/Munovv/broblogo/auth-service/auth-service/service"
+	"github.com/Munovv/broblogo/internal/auth-service/service"
 	"github.com/gin-gonic/gin"
 )
 

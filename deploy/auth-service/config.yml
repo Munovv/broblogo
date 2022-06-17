@@ -1,9 +1,10 @@
-server:
-  port: 3303
-  read_timeout: 20
-  write_timeout: 20
+mongodb:
+  url: mongodb://storage:27017
+  database: auth-service
+  collection: users_collection
 
-mongo:
-  uri: "mongodb://localhost:27017"
-  name: "auth_service"
-  collection: "users"
+server:
+  port: 8080
+  read_timeout: 20s
+  write_timeout: 20s
+  max_write_mega_bytes: 2

@@ -2,11 +2,11 @@ package main
 
 import (
 	"context"
-	"github.com/Munovv/broblogo/internal/auth-service/config"
-	"github.com/Munovv/broblogo/internal/auth-service/handler/rest"
+	"github.com/Munovv/broblogo/internal/auth-service/handler"
 	"github.com/Munovv/broblogo/internal/auth-service/repository"
-	"github.com/Munovv/broblogo/internal/auth-service/server"
 	"github.com/Munovv/broblogo/internal/auth-service/service"
+	"github.com/Munovv/broblogo/internal/pkg/config"
+	"github.com/Munovv/broblogo/internal/pkg/http"
 	"log"
 	"os"
 	"os/signal"
@@ -14,30 +14,28 @@ import (
 )
 
 func main() {
-	// Инициализация конфигурации проекта
-	cfg, err := config.NewConfig()
+	cfg, err := config.NewConfig("configs", "config")
 	if err != nil {
-		log.Fatalf("an error occurred while init configs: %s", err.Error())
+		log.Fatalf("failed config init: %s", err.Error())
 		return
 	}
 
-	// Подключение к mongo
-	db, err := repository.InitDb(cfg.Mongo)
+	db, err := repository.InitDb(&cfg.Mongo)
 	if err != nil {
 		return
 	}
 
-	// Инициализация зависимостей
-	repo := repository.NewRepository(db, cfg.Mongo.Collection)
-	service := service.NewService(repo)
-	handler := rest.NewHandler(service)
+	srv := http.NewServer(
+		cfg.Server,
+		handler.NewHandler(
+			service.NewService(
+				repository.NewRepository(db, cfg.Mongo.Collection),
+			),
+		).InitRoutes(),
+	)
 
-	// Создание маршрутов
-	router := handler.InitRoutes()
-
-	srv := new(server.Server)
 	go func() {
-		if err = srv.Run(cfg.Server, router); err != nil {
+		if err = srv.Start(); err != nil {
 			log.Fatalf("an error occurred while running http server: %s", err.Error())
 			return
 		}

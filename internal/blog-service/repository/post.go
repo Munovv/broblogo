@@ -2,7 +2,7 @@ package repository
 
 import (
 	"context"
-	"github.com/Munovv/broblogo/blog-service/blog-service/model"
+	"github.com/Munovv/broblogo/internal/blog-service/model"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
